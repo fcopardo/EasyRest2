@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.github.fcopardo.EasyRest"
+        applicationId "com.github.fcopardo.easyrest"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1

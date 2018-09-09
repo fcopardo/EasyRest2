@@ -1,4 +1,4 @@
-package com.github.fcopardo.EasyRest
+package com.github.fcopardo.easyrest
 
 import org.junit.Test
 

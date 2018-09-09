@@ -1,4 +1,4 @@
-package com.github.pardo.EasyRest.common;
+package com.github.fcopardo.easyrest.common;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

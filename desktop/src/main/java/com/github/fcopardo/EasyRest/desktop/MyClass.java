@@ -1,4 +1,4 @@
-package com.github.fcopardo.EasyRest.desktop;
+package com.github.fcopardo.easyrest.desktop;
 
 public class MyClass {
 }

@@ -1,4 +1,4 @@
-package com.github.fcopardo.EasyRest.android;
+package com.github.fcopardo.easyrest.android;
 
 import org.junit.Test;
 

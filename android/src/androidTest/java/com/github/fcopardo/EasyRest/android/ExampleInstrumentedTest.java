@@ -1,4 +1,4 @@
-package com.github.fcopardo.EasyRest.android;
+package com.github.fcopardo.easyrest.android;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.github.fcopardo.EasyRest.android.test", appContext.getPackageName());
+        assertEquals("com.github.fcopardo.easyrest.android.test", appContext.getPackageName());
     }
 }
