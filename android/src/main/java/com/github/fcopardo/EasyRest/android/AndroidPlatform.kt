@@ -10,16 +10,15 @@ import java.util.*
 
 class AndroidPlatform : Platform {
 
-    var application : Application? = null
+    private var application : Application? = null
 
-    fun setApplication(app:Application) : AndroidPlatform{
+    fun setApplication(app:Application) : AndroidPlatform {
         application = app
         return this
     }
 
     /**
      * Deletes the EasyRest cache.
-     * @param context a valid application context.
      */
     override fun deleteCache() {
         class Task : Runnable {
@@ -89,8 +88,7 @@ class AndroidPlatform : Platform {
         var context: Context? = application.applicationContext
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
-        val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
-        return isConnected
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 
 }
