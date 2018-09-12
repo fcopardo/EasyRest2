@@ -2,13 +2,30 @@ package com.github.fcopardo.easyrest.common
 
 import com.github.fcopardo.easyrest.common.callbacks.*
 import java.net.URI
-import java.time.Year
 
 open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
 
     @JvmField var milliseconds : Int = 5000
     @JvmField var entity : T? = null
     @JvmField var jsonResponseEntity : X? = null
+    @JvmField var afterTaskCompletion : AfterTaskCompletion<X>? = null
+    @JvmField var afterTaskFailure : AfterTaskFailure? = null
+    @JvmField var afterServerTaskFailure : AfterServerTaskFailure? = null
+    @JvmField var afterClientTaskFailure : AfterClientTaskFailure? = null
+    @JvmField var commonTasks : CommonTasks? = null
+    @JvmField var errorResponse : String = ""
+    @JvmField var requestHeaders : HashMap<String, String> = HashMap()
+    @JvmField var responseHeaders : HashMap<String, String> = HashMap()
+    @JvmField var methodToCall : HttpMethod = HttpMethod.POST
+    @JvmField var responseStatus : Int = HttpStatus.I_AM_A_TEAPOT
+    @JvmField var urlParameters : HashMap<String, Any> = HashMap()
+    @JvmField var url : String = ""
+    @JvmField var cacheEnabled: Boolean = false
+    @JvmField var automaticCacheRefresh: Boolean = false
+    @JvmField var fullAsync: Boolean = false
+    @JvmField var reprocessWhenRefreshing: Boolean = false
+    @JvmField var cacheTime: Long = 0
+
 
     override fun setTimeOut(milliseconds: Int): RestWorker<T, X> {
         this.milliseconds = milliseconds
@@ -34,98 +51,116 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
     }
 
     override fun getErrorResponse(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return errorResponse
     }
 
     override fun getRequestHeaders(): Map<String, String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return requestHeaders
     }
 
     override fun setRequestHeaders(requestHeaders: Map<String, String>): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.requestHeaders.clear()
+        this.requestHeaders.putAll(requestHeaders)
+        return this
     }
 
     override fun getResponseHeaders(): Map<String, String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return responseHeaders
     }
 
     override fun setResponseHeaders(responseHeaders: Map<String, String>): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.responseHeaders.clear()
+        this.responseHeaders.putAll(responseHeaders)
+        return this
     }
 
     override fun getMethodToCall(): HttpMethod {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getResponseStatus(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return methodToCall
     }
 
     override fun setMethodToCall(MethodToCall: HttpMethod): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.methodToCall = MethodToCall
+        return this
     }
 
-    override fun addUrlParams(urlParameters: Map<String, Object>): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getResponseStatus(): Int {
+        return responseStatus
+    }
+
+    override fun addUrlParams(urlParameters: Map<String, Any>): RestWorker<T, X> {
+        this.urlParameters.putAll(urlParameters)
+        return this
     }
 
     override fun setUrl(Url: String): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.url = Url
+        return this
     }
 
     override fun getUrl(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return this.url
     }
 
     override fun getURI(): URI {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return URI(url)
     }
 
-    override fun setTaskCompletion(task: AfterTaskCompletion<X>): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setTaskCompletion(task: AfterTaskCompletion<X>?): RestWorker<T, X> {
+        this.afterTaskCompletion = task
+        return this
     }
 
-    override fun setTaskFailure(taskFailure: AfterTaskFailure): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setTaskFailure(taskFailure: AfterTaskFailure?): RestWorker<T, X> {
+        this.afterTaskFailure = taskFailure
+        return this
     }
 
-    override fun setServerTaskFailure(serverTaskFailure: AfterServerTaskFailure): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setServerTaskFailure(serverTaskFailure: AfterServerTaskFailure?): RestWorker<T, X> {
+        this.afterServerTaskFailure = serverTaskFailure
+        return this
     }
 
-    override fun setClientTaskFailure(clientTaskFailure: AfterClientTaskFailure): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setClientTaskFailure(clientTaskFailure: AfterClientTaskFailure?): RestWorker<T, X> {
+        this.afterClientTaskFailure = clientTaskFailure
+        return this
     }
 
-    override fun setCommonTasks(commonTasks: CommonTasks): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setCommonTasks(commonTasks: CommonTasks?): RestWorker<T, X> {
+        this.commonTasks = commonTasks
+        return this
     }
 
     override fun addHeader(header: String, value: String): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.requestHeaders.put(header, value)
+        return this
     }
 
     override fun isCacheEnabled(bol: Boolean): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.cacheEnabled = bol
+        return this
     }
 
     override fun setCacheTime(time: Long): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.cacheTime = time
+        return this
     }
 
     override fun setReprocessWhenRefreshing(reprocessWhenRefreshing: Boolean): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.reprocessWhenRefreshing = reprocessWhenRefreshing
+        return this
     }
 
     override fun setAutomaticCacheRefresh(automaticCacheRefresh: Boolean): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.automaticCacheRefresh = automaticCacheRefresh
+        return this
     }
 
     override fun isFullAsync(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return this.fullAsync
     }
 
     override fun setFullAsync(fullAsync: Boolean): RestWorker<T, X> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        this.fullAsync = fullAsync
+        return this
     }
 }
