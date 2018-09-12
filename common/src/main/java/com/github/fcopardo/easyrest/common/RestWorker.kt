@@ -1,5 +1,8 @@
 package com.github.fcopardo.easyrest.common
 
+import com.github.fcopardo.easyrest.common.callbacks.*
+import java.net.URI
+
 /**
  * Public API
  */
@@ -8,7 +11,7 @@ interface RestWorker<T, X, M> {
     /**
      * Setter for the request's timeout
      */
-    fun setTimeOut(miliseconds : Int) : RestWorker<T, X, M>
+    fun setTimeOut(milliseconds : Int) : RestWorker<T, X, M>
 
     /**
      * Returns the argument entity.
@@ -96,28 +99,28 @@ interface RestWorker<T, X, M> {
      *
      * @param task a class implementing the afterTaskCompletion interface.
      */
-    public fun setTaskCompletion(task : afterTaskCompletion<X>) : RestWorker<T, X, M>
+    public fun setTaskCompletion(task : AfterTaskCompletion<X>) : RestWorker<T, X, M>
 
     /**
      * Interface. Allows to attach a body of code to be executed after a failed rest call.
      *
      * @param taskFailure a class implementing the afterTaskFailure interface.
      */
-    public fun setTaskFailure(taskFailure : afterTaskFailure) : RestWorker<T, X, M>
+    public fun setTaskFailure(taskFailure : AfterTaskFailure) : RestWorker<T, X, M>
 
     /**
      * Interface to be executed when a server error occurs.
      *
      * @param serverTaskFailure an instance of the afterServerTaskFailure interface
      */
-    public fun setServerTaskFailure(serverTaskFailure : afterServerTaskFailure<M>) : RestWorker<T, X, M>
+    public fun setServerTaskFailure(serverTaskFailure : AfterServerTaskFailure) : RestWorker<T, X, M>
 
     /**
      * Interface to be executed when a client error arises.
      *
      * @param clientTaskFailure an instance of the afterClientTaskFailure interface
      */
-    public fun setClientTaskFailure(clientTaskFailure : afterClientTaskFailure<M>) : RestWorker<T, X, M>
+    public fun setClientTaskFailure(clientTaskFailure : AfterClientTaskFailure) : RestWorker<T, X, M>
     
     /**
      * Interface to be executed after all processes are finalized, no matter the result.
@@ -134,7 +137,7 @@ interface RestWorker<T, X, M> {
 
     fun setReprocessWhenRefreshing(reprocessWhenRefreshing : Boolean) : RestWorker<T, X, M>
 
-    fun setAutomaticCacheRefresh(boolean automaticCacheRefresh : Boolean) : RestWorker<T, X, M>
+    fun setAutomaticCacheRefresh(automaticCacheRefresh : Boolean) : RestWorker<T, X, M>
 
     fun isFullAsync() : Boolean
 
