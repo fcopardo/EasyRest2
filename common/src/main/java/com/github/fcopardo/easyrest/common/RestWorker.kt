@@ -6,40 +6,40 @@ import java.net.URI
 /**
  * Public API
  */
-interface RestWorker<T, X, M> {
+interface RestWorker<T, X> {
 
     /**
      * Setter for the request's timeout
      */
-    fun setTimeOut(milliseconds : Int) : RestWorker<T, X, M>
+    fun setTimeOut(milliseconds : Int) : RestWorker<T, X>
 
     /**
      * Returns the argument entity.
      *
      * @return a subclass of BaseModel
      */
-    fun getEntity() : T
+    fun getEntity() : T?
 
     /**
      * Sets the argument entity.
      *
      * @param entity a class implementing sendRestData, to be sent in the request.
      */
-    fun setEntity(entity : T) : RestWorker<T, X, M>
+    fun setEntity(entity : T) : RestWorker<T, X>
 
     /**
      * Returns the response of the rest call, in X form.
      *
      * @return an X instance of the rest call response.
      */
-    fun getJsonResponseEntity() : X
+    fun getJsonResponseEntity() : X?
 
     /**
      * Sets the response entity.
      *
      * @param jsonResponseEntity an instance of X.
      */
-    fun setJsonResponseEntity(jsonResponseEntity : X ) : RestWorker<T, X, M>
+    fun setJsonResponseEntity(jsonResponseEntity : X ) : RestWorker<T, X>
 
     fun getErrorResponse() : String
 
@@ -55,7 +55,7 @@ interface RestWorker<T, X, M> {
      *
      * @param requestHeaders an instance of HttpHeaders.
      */
-    fun setRequestHeaders(requestHeaders : Map<String, String>) : RestWorker<T, X, M>
+    fun setRequestHeaders(requestHeaders : Map<String, String>) : RestWorker<T, X>
 
     /**
      * Returns the headers from the response.
@@ -64,7 +64,7 @@ interface RestWorker<T, X, M> {
      */
     fun getResponseHeaders() : Map<String, String>
 
-    fun setResponseHeaders(responseHeaders : Map<String, String>) : RestWorker<T, X, M>
+    fun setResponseHeaders(responseHeaders : Map<String, String>) : RestWorker<T, X>
 
     /**
      * Returns the REST method to be called when the service call is executed.
@@ -80,15 +80,15 @@ interface RestWorker<T, X, M> {
      *
      * @param MethodToCall a valid http method.
      */
-    fun setMethodToCall(MethodToCall : HttpMethod) : RestWorker<T, X, M>
+    fun setMethodToCall(MethodToCall : HttpMethod) : RestWorker<T, X>
 
-    fun addUrlParams(urlParameters : Map<String, Object> ) : RestWorker<T, X, M>
+    fun addUrlParams(urlParameters : Map<String, Object> ) : RestWorker<T, X>
     /**
      * Sets the URL to be used.
      *
      * @param Url the URL of the rest call.
      */
-    fun setUrl(Url : String) : RestWorker<T,X,M>
+    fun setUrl(Url : String) : RestWorker<T, X>
 
     fun getUrl() : String
 
@@ -99,48 +99,48 @@ interface RestWorker<T, X, M> {
      *
      * @param task a class implementing the afterTaskCompletion interface.
      */
-    public fun setTaskCompletion(task : AfterTaskCompletion<X>) : RestWorker<T, X, M>
+    public fun setTaskCompletion(task : AfterTaskCompletion<X>) : RestWorker<T, X>
 
     /**
      * Interface. Allows to attach a body of code to be executed after a failed rest call.
      *
      * @param taskFailure a class implementing the afterTaskFailure interface.
      */
-    public fun setTaskFailure(taskFailure : AfterTaskFailure) : RestWorker<T, X, M>
+    public fun setTaskFailure(taskFailure : AfterTaskFailure) : RestWorker<T, X>
 
     /**
      * Interface to be executed when a server error occurs.
      *
      * @param serverTaskFailure an instance of the afterServerTaskFailure interface
      */
-    public fun setServerTaskFailure(serverTaskFailure : AfterServerTaskFailure) : RestWorker<T, X, M>
+    public fun setServerTaskFailure(serverTaskFailure : AfterServerTaskFailure) : RestWorker<T, X>
 
     /**
      * Interface to be executed when a client error arises.
      *
      * @param clientTaskFailure an instance of the afterClientTaskFailure interface
      */
-    public fun setClientTaskFailure(clientTaskFailure : AfterClientTaskFailure) : RestWorker<T, X, M>
+    public fun setClientTaskFailure(clientTaskFailure : AfterClientTaskFailure) : RestWorker<T, X>
     
     /**
      * Interface to be executed after all processes are finalized, no matter the result.
      *
      * @param commonTasks an instance of the commonTasks interface.
      */
-    fun setCommonTasks(commonTasks : CommonTasks) : RestWorker<T, X, M>
+    fun setCommonTasks(commonTasks : CommonTasks) : RestWorker<T, X>
 
-    fun addHeader(header : String, value : String) : RestWorker<T, X, M>
+    fun addHeader(header : String, value : String) : RestWorker<T, X>
 
-    fun isCacheEnabled(bol : Boolean) : RestWorker<T, X, M>
+    fun isCacheEnabled(bol : Boolean) : RestWorker<T, X>
     
-    fun setCacheTime(time : Long) : RestWorker<T, X, M>
+    fun setCacheTime(time : Long) : RestWorker<T, X>
 
-    fun setReprocessWhenRefreshing(reprocessWhenRefreshing : Boolean) : RestWorker<T, X, M>
+    fun setReprocessWhenRefreshing(reprocessWhenRefreshing : Boolean) : RestWorker<T, X>
 
-    fun setAutomaticCacheRefresh(automaticCacheRefresh : Boolean) : RestWorker<T, X, M>
+    fun setAutomaticCacheRefresh(automaticCacheRefresh : Boolean) : RestWorker<T, X>
 
     fun isFullAsync() : Boolean
 
-    fun setFullAsync(fullAsync : Boolean) : RestWorker<T, X, M>
+    fun setFullAsync(fullAsync : Boolean) : RestWorker<T, X>
 
 }

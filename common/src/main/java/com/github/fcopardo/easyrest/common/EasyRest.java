@@ -45,7 +45,7 @@ public class EasyRest {
     public boolean checkConnectivity(){
         return platform != null && platform.checkConnectivity();
     }
-    
+
 
     public void setDebugMode(boolean debugMode){
         DebugMode = debugMode;
