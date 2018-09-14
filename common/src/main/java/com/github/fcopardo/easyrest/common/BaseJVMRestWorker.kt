@@ -3,31 +3,45 @@ package com.github.fcopardo.easyrest.common
 import com.github.fcopardo.easyrest.common.callbacks.*
 import java.net.URI
 
-open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
+open class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
 
-    @JvmField var milliseconds : Int = 5000
-    @JvmField var entity : T? = null
-    @JvmField var jsonResponseEntity : X? = null
-    @JvmField var afterTaskCompletion : AfterTaskCompletion<X>? = null
-    @JvmField var afterTaskFailure : AfterTaskFailure? = null
-    @JvmField var afterServerTaskFailure : AfterServerTaskFailure? = null
-    @JvmField var afterClientTaskFailure : AfterClientTaskFailure? = null
-    @JvmField var commonTasks : CommonTasks? = null
-    @JvmField var errorResponse : String = ""
-    @JvmField var requestHeaders : HashMap<String, String> = HashMap()
-    @JvmField var responseHeaders : HashMap<String, String> = HashMap()
-    @JvmField var methodToCall : HttpMethod = HttpMethod.POST
-    @JvmField var responseStatus : Int = HttpStatus.I_AM_A_TEAPOT
-    @JvmField var urlParameters : HashMap<String, Any> = HashMap()
-    @JvmField var url : String = ""
-    @JvmField var cacheEnabled: Boolean = false
-    @JvmField var automaticCacheRefresh: Boolean = false
-    @JvmField var fullAsync: Boolean = false
-    @JvmField var reprocessWhenRefreshing: Boolean = false
-    @JvmField var cacheTime: Long = 0
+    protected val entityClass : Class<T>
+    protected val jsonResponseEntityClass : Class<X>
+    private var platform : Z? = null
+    private var milliseconds : Int = 5000
+    private var entity : T? = null
+    private var jsonResponseEntity : X? = null
+    private var afterTaskCompletion : AfterTaskCompletion<X>? = null
+    private var afterTaskFailure : AfterTaskFailure? = null
+    private var afterServerTaskFailure : AfterServerTaskFailure? = null
+    private var afterClientTaskFailure : AfterClientTaskFailure? = null
+    private var commonTasks : CommonTasks? = null
+    private var errorResponse : String = ""
+    private var requestHeaders : HashMap<String, String> = HashMap()
+    private var responseHeaders : HashMap<String, String> = HashMap()
+    private var httpMethod : HttpMethod = HttpMethod.POST
+    private var responseStatus : Int = HttpStatus.I_AM_A_TEAPOT
+    private var urlParameters : HashMap<String, Any> = HashMap()
+    private var url : String = ""
+    private var cacheEnabled: Boolean = false
+    private var automaticCacheRefresh: Boolean = false
+    private var fullAsync: Boolean = false
+    private var reprocessWhenRefreshing: Boolean = false
+    private var cacheTime: Long = 0
+    private var result : Boolean = false
+    protected var cachedFile : String = ""
 
+    constructor(platform : Z, entityClass : Class<T>, responseClass : Class<X>){
+        this.platform = platform
+        this.entityClass = entityClass
+        this.jsonResponseEntityClass = responseClass
+    }
 
-    override fun setTimeOut(milliseconds: Int): RestWorker<T, X> {
+    fun getPlatform() : Z? {
+        return platform
+    }
+
+    override fun setTimeOut(milliseconds: Int): RestWorker<T, X, Z> {
         this.milliseconds = milliseconds
         return this
     }
@@ -36,7 +50,7 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return entity
     }
 
-    override fun setEntity(entity: T): RestWorker<T, X> {
+    override fun setEntity(entity: T): RestWorker<T, X, Z> {
         this.entity = entity
         return this
     }
@@ -45,7 +59,7 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return jsonResponseEntity
     }
 
-    override fun setJsonResponseEntity(jsonResponseEntity: X): RestWorker<T, X> {
+    override fun setJsonResponseEntity(jsonResponseEntity: X): RestWorker<T, X, Z> {
         this.jsonResponseEntity = jsonResponseEntity
         return this
     }
@@ -58,7 +72,7 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return requestHeaders
     }
 
-    override fun setRequestHeaders(requestHeaders: Map<String, String>): RestWorker<T, X> {
+    override fun setRequestHeaders(requestHeaders: Map<String, String>): RestWorker<T, X, Z> {
         this.requestHeaders.clear()
         this.requestHeaders.putAll(requestHeaders)
         return this
@@ -68,18 +82,18 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return responseHeaders
     }
 
-    override fun setResponseHeaders(responseHeaders: Map<String, String>): RestWorker<T, X> {
+    override fun setResponseHeaders(responseHeaders: Map<String, String>): RestWorker<T, X, Z> {
         this.responseHeaders.clear()
         this.responseHeaders.putAll(responseHeaders)
         return this
     }
 
     override fun getMethodToCall(): HttpMethod {
-        return methodToCall
+        return httpMethod
     }
 
-    override fun setMethodToCall(MethodToCall: HttpMethod): RestWorker<T, X> {
-        this.methodToCall = MethodToCall
+    override fun setMethodToCall(MethodToCall: HttpMethod): RestWorker<T, X, Z> {
+        this.httpMethod = MethodToCall
         return this
     }
 
@@ -87,12 +101,12 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return responseStatus
     }
 
-    override fun addUrlParams(urlParameters: Map<String, Any>): RestWorker<T, X> {
+    override fun addUrlParams(urlParameters: Map<String, Any>): RestWorker<T, X, Z> {
         this.urlParameters.putAll(urlParameters)
         return this
     }
 
-    override fun setUrl(Url: String): RestWorker<T, X> {
+    override fun setUrl(Url: String): RestWorker<T, X, Z> {
         this.url = Url
         return this
     }
@@ -105,52 +119,52 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return URI(url)
     }
 
-    override fun setTaskCompletion(task: AfterTaskCompletion<X>?): RestWorker<T, X> {
+    override fun setTaskCompletion(task: AfterTaskCompletion<X>?): RestWorker<T, X, Z> {
         this.afterTaskCompletion = task
         return this
     }
 
-    override fun setTaskFailure(taskFailure: AfterTaskFailure?): RestWorker<T, X> {
+    override fun setTaskFailure(taskFailure: AfterTaskFailure?): RestWorker<T, X, Z> {
         this.afterTaskFailure = taskFailure
         return this
     }
 
-    override fun setServerTaskFailure(serverTaskFailure: AfterServerTaskFailure?): RestWorker<T, X> {
+    override fun setServerTaskFailure(serverTaskFailure: AfterServerTaskFailure?): RestWorker<T, X, Z> {
         this.afterServerTaskFailure = serverTaskFailure
         return this
     }
 
-    override fun setClientTaskFailure(clientTaskFailure: AfterClientTaskFailure?): RestWorker<T, X> {
+    override fun setClientTaskFailure(clientTaskFailure: AfterClientTaskFailure?): RestWorker<T, X, Z> {
         this.afterClientTaskFailure = clientTaskFailure
         return this
     }
 
-    override fun setCommonTasks(commonTasks: CommonTasks?): RestWorker<T, X> {
+    override fun setCommonTasks(commonTasks: CommonTasks?): RestWorker<T, X, Z> {
         this.commonTasks = commonTasks
         return this
     }
 
-    override fun addHeader(header: String, value: String): RestWorker<T, X> {
+    override fun addHeader(header: String, value: String): RestWorker<T, X, Z> {
         this.requestHeaders.put(header, value)
         return this
     }
 
-    override fun isCacheEnabled(bol: Boolean): RestWorker<T, X> {
+    override fun isCacheEnabled(bol: Boolean): RestWorker<T, X, Z> {
         this.cacheEnabled = bol
         return this
     }
 
-    override fun setCacheTime(time: Long): RestWorker<T, X> {
+    override fun setCacheTime(time: Long): RestWorker<T, X, Z> {
         this.cacheTime = time
         return this
     }
 
-    override fun setReprocessWhenRefreshing(reprocessWhenRefreshing: Boolean): RestWorker<T, X> {
+    override fun setReprocessWhenRefreshing(reprocessWhenRefreshing: Boolean): RestWorker<T, X, Z> {
         this.reprocessWhenRefreshing = reprocessWhenRefreshing
         return this
     }
 
-    override fun setAutomaticCacheRefresh(automaticCacheRefresh: Boolean): RestWorker<T, X> {
+    override fun setAutomaticCacheRefresh(automaticCacheRefresh: Boolean): RestWorker<T, X, Z> {
         this.automaticCacheRefresh = automaticCacheRefresh
         return this
     }
@@ -159,8 +173,16 @@ open class BaseJVMRestWorker<T, X> : RestWorker<T, X> {
         return this.fullAsync
     }
 
-    override fun setFullAsync(fullAsync: Boolean): RestWorker<T, X> {
+    override fun setFullAsync(fullAsync: Boolean): RestWorker<T, X, Z> {
         this.fullAsync = fullAsync
         return this
+    }
+
+    protected fun setResult(value : Boolean){
+        this.result = value
+    }
+
+    protected fun getResult() : Boolean {
+        return result
     }
 }

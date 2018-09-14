@@ -18,7 +18,7 @@ public class EasyRest {
         }
     }
 
-    public EasyRest get(){
+    public static EasyRest get(){
         if(singleton == null){
             throw new NullPointerException("Error! the EasyRest instance needs to be initialized first by using the build(Platform platform) method");
         }

@@ -17,6 +17,10 @@ class AndroidPlatform : Platform {
         return this
     }
 
+    fun getApplication() : Application? {
+        return application
+    }
+
     /**
      * Deletes the EasyRest cache.
      */
@@ -85,7 +89,7 @@ class AndroidPlatform : Platform {
     }
 
     override fun checkConnectivity(): Boolean {
-        var context: Context? = application.applicationContext
+        var context: Context? = application?.applicationContext
         val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
