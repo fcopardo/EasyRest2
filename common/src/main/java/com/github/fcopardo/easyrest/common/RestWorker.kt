@@ -92,6 +92,8 @@ interface RestWorker<T, X, out Platform> {
 
     fun getUrl() : String
 
+    fun createUrl() : RestWorker<T, X, out Platform>
+
     fun getURI() : URI
 
     /**

@@ -115,6 +115,33 @@ open class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
         return this.url
     }
 
+    override fun createUrl(): RestWorker<T, X, Z>{
+        if (urlParameters != null && !urlParameters.isEmpty()) {
+            val customUrl = getUrl()
+            val builder = StringBuilder()
+
+            var separator = "?"
+
+            builder.append(customUrl)
+            for (key in urlParameters.keys) {
+                var value = urlParameters[key]
+
+                if (value.toString().contains(" ")) {
+                    value = value.toString().replace(" ", "+")
+                }
+
+                builder.append(separator)
+                builder.append(key)
+                builder.append("=")
+                builder.append(value)
+
+                separator = "&"
+            }
+            setUrl(builder.toString())
+        }
+        return this
+    }
+
     override fun getURI(): URI {
         return URI(url)
     }
