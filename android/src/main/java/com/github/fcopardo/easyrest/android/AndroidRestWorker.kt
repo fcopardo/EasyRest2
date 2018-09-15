@@ -7,7 +7,7 @@ import java.io.File
 import java.security.NoSuchAlgorithmException
 
 
-class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, com.github.fcopardo.easyrest.android.AndroidPlatform> {
+class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
 
     constructor(platform: AndroidPlatform, responseClass: Class<T>, requestClass: Class<X>):super(platform, responseClass, requestClass){
        EasyRest.build(getPlatform())
