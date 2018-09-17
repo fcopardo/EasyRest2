@@ -28,7 +28,7 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
                 e.printStackTrace()
             }
 
-            return (context?.cacheDir?.absolutePath + File.separator + "EasyRest" + File.separator
+            return (getPlatform()!!.fullPath
                     + jsonResponseEntityClass.simpleName
                     + queryKey)
         }

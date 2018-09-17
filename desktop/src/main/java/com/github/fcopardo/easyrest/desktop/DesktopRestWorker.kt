@@ -4,6 +4,7 @@ import com.github.fcopardo.easyrest.common.BaseJVMRestWorker
 import com.github.fcopardo.easyrest.common.EasyRest
 import java.io.File
 import java.security.NoSuchAlgorithmException
+import java.io.IOException
 
 
 class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
@@ -30,6 +31,24 @@ class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
         }
         System.out.println("CACHE: $cachedFile")
         return cachedFile
+    }
+
+    private fun createSolidCache() {
+
+        EasyRest.get()!!.cacheRequest(getCachedFileName(), getJsonResponseEntity())
+        Thread(Runnable {
+            val mapper = ObjectMapper()
+
+            try {
+                val dir = File(getPlatform()?.basePath + File.separator + "EasyRest")
+                dir.mkdir()
+                val f = File(getCachedFileName())
+                mapper.writeValue(f, getJsonResponseEntity())
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }).start()
+
     }
 
 

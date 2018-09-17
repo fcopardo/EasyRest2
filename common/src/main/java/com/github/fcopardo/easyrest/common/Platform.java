@@ -9,6 +9,8 @@ public interface Platform {
     void deleteCache();
     void deleteCache(List<Class> classes, long maximumTime);
     boolean checkConnectivity();
+    String getBasePath();
+    String getFullPath();
 
     /**
      * Creates a SHA-1 hash from a given string.

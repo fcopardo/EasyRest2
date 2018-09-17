@@ -81,18 +81,18 @@ public class EasyRest {
         defaultQuickCache.setCachingSize(amount);
     }
 
-    void cacheRequest(String name, Object entity){
+    public void cacheRequest(String name, Object entity){
         if(defaultQuickCache == null) defaultQuickCache = new LiteCachingStorage();
         defaultQuickCache.addRequest(name, entity);
     }
 
-    Object getCachedRequest(String name){
+    public Object getCachedRequest(String name){
         if(defaultQuickCache==null) defaultQuickCache = new LiteCachingStorage();
         if(defaultQuickCache.isCachedRequest(name)) return defaultQuickCache.getRequest(name);
         return null;
     }
 
-    boolean isCachedRequest(String name){
+    public boolean isCachedRequest(String name){
         if(defaultQuickCache==null) defaultQuickCache = new LiteCachingStorage();
         return defaultQuickCache.isCachedRequest(name);
     }

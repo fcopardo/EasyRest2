@@ -9,6 +9,13 @@ import java.io.FileFilter
 import java.util.*
 
 class AndroidPlatform : Platform {
+    override fun getFullPath(): String {
+        return application?.cacheDir?.absolutePath + File.separator + "EasyRest" + File.separator
+    }
+
+    override fun getBasePath(): String {
+        return application?.cacheDir?.absolutePath.toString()
+    }
 
     private var application : Application? = null
 

@@ -10,6 +10,13 @@ import java.util.concurrent.FutureTask
 import java.util.Arrays.asList
 
 class DesktopPlatform : Platform {
+    override fun getFullPath(): String {
+        return System.getProperty("user.dir") + File.separator + "EasyRest" + File.separator
+    }
+
+    override fun getBasePath(): String {
+        return System.getProperty("user.dir")
+    }
 
     override fun deleteCache() {
         class Task : Runnable {
