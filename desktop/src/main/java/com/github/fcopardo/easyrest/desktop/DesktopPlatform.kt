@@ -9,9 +9,6 @@ import java.util.*
 import java.util.concurrent.FutureTask
 import java.util.Arrays.asList
 
-
-
-
 class DesktopPlatform : Platform {
 
     override fun deleteCache() {
