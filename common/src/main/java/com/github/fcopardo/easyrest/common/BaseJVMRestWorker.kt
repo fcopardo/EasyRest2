@@ -1,13 +1,17 @@
 package com.github.fcopardo.easyrest.common
 
 import com.github.fcopardo.easyrest.common.callbacks.*
+import java.io.File
+import java.io.IOException
 import java.net.URI
+import java.util.*
 
-open class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
+abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
 
     protected val entityClass : Class<T>
     protected val jsonResponseEntityClass : Class<X>
     private var platform : Z? = null
+    protected var mapper : JsonSerializer<X>?= null
     private var milliseconds : Int = 5000
     private var entity : T? = null
     private var jsonResponseEntity : X? = null
@@ -39,6 +43,11 @@ open class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
 
     fun getPlatform() : Z? {
         return platform
+    }
+
+    fun setJsonSerializer(serializer: JsonSerializer<X>): BaseJVMRestWorker<T, X, Z> {
+        this.mapper = serializer
+        return this
     }
 
     override fun setTimeOut(milliseconds: Int): RestWorker<T, X, Z> {
@@ -212,4 +221,7 @@ open class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
     protected fun getResult() : Boolean {
         return result
     }
+
+    abstract fun getCachedFileName(): String
+    abstract fun showMessage(title : String, message : String)
 }

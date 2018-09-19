@@ -2,9 +2,11 @@ package com.github.fcopardo.easyrest.desktop
 
 import com.github.fcopardo.easyrest.common.BaseJVMRestWorker
 import com.github.fcopardo.easyrest.common.EasyRest
+import com.github.fcopardo.easyrest.common.PoolExecutor
 import java.io.File
 import java.security.NoSuchAlgorithmException
 import java.io.IOException
+import java.util.*
 
 
 class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
@@ -13,7 +15,11 @@ class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
         EasyRest.build(platform)
     }
 
-    fun getCachedFileName(): String {
+    override fun showMessage(title: String, message: String) {
+        System.out.println("$title : $message")
+    }
+
+    override fun getCachedFileName(): String {
 
         if (cachedFile.isEmpty() || cachedFile=="") {
 
@@ -25,7 +31,7 @@ class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
                 e.printStackTrace()
             }
 
-            return (System.getProperty("user.dir") + File.separator + "EasyRest" + File.separator
+            return (getPlatform()!!.fullPath
                     + jsonResponseEntityClass.simpleName
                     + queryKey)
         }
@@ -35,20 +41,29 @@ class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
 
     private fun createSolidCache() {
 
-        EasyRest.get()!!.cacheRequest(getCachedFileName(), getJsonResponseEntity())
-        Thread(Runnable {
-            val mapper = ObjectMapper()
+        EasyRest.get().cacheRequest(getCachedFileName(), getJsonResponseEntity())
+        class Task : Runnable {
 
-            try {
-                val dir = File(getPlatform()?.basePath + File.separator + "EasyRest")
-                dir.mkdir()
-                val f = File(getCachedFileName())
-                mapper.writeValue(f, getJsonResponseEntity())
-            } catch (e: IOException) {
-                e.printStackTrace()
+            override fun run() {
+
+                try {
+                    val random = Random()
+                    val x = random.nextInt()
+                    showMessage("EasyRest-Cache", "Starting serialization $x")
+                    val dir = File(getPlatform()!!.basePath + File.separator + "EasyRest")
+                    dir.mkdir()
+                    val f = File(getCachedFileName())
+                    mapper!!.writeValue(f, getJsonResponseEntity()!!)
+                    showMessage("EasyRest-Cache", "Finished serialization $x")
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
             }
-        }).start()
+        }
 
+        val task = Task()
+        PoolExecutor.get().getExecutor(true).execute(task)
     }
 
 
