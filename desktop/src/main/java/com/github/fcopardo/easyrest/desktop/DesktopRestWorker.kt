@@ -11,7 +11,8 @@ import java.util.*
 
 class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
 
-    constructor(platform : DesktopPlatform, responseClass: Class<T>, requestClass: Class<X>):super(platform, responseClass, requestClass){
+    constructor(platform : DesktopPlatform, responseClass: Class<T>, requestClass: Class<X>)
+            : super(platform, responseClass, requestClass){
         EasyRest.build(platform)
     }
 
