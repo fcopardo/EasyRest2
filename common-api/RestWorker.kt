@@ -1,7 +1,6 @@
-package com.github.fcopardo.easyrest.common
+package com.github.fcopardo.easyrest.api
 
 import com.github.fcopardo.easyrest.common.callbacks.*
-import java.net.URI
 
 /**
  * Public API
@@ -94,7 +93,6 @@ interface RestWorker<T, X, out Platform> {
 
     fun createUrl() : RestWorker<T, X, out Platform>
 
-    fun getURI() : URI
 
     /**
      * Interface. Allows to attach a body of code to be executed after a successful rest call.

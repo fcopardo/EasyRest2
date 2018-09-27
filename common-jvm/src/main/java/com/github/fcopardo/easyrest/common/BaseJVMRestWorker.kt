@@ -1,8 +1,5 @@
 package com.github.fcopardo.easyrest.common
 
-import com.github.fcopardo.easyrest.common.callbacks.*
-import java.io.File
-import java.io.IOException
 import java.net.URI
 import java.util.*
 
@@ -151,7 +148,7 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
         return this
     }
 
-    override fun getURI(): URI {
+    fun getURI(): URI {
         return URI(url)
     }
 
