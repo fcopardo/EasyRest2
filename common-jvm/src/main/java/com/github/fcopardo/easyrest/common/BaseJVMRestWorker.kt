@@ -1,5 +1,7 @@
 package com.github.fcopardo.easyrest.common
 
+import com.github.fcopardo.easyrest.api.RestWorker
+import com.github.fcopardo.easyrest.common.callbacks.*
 import java.net.URI
 import java.util.*
 

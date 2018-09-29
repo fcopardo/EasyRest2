@@ -1,5 +1,6 @@
 package com.github.fcopardo.easyrest.api
 
+import com.github.fcopardo.easyrest.common.HttpMethod
 import com.github.fcopardo.easyrest.common.callbacks.*
 
 /**
