@@ -33,7 +33,7 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
                 e.printStackTrace()
             }
 
-            return (getPlatform()!!.fullPath
+            return (getPlatform()?.getFullPath()
                     + jsonResponseEntityClass.simpleName
                     + queryKey)
         }
@@ -52,7 +52,7 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
                     val random = Random()
                     val x = random.nextInt()
                     showMessage("EasyRest-Cache", "Starting serialization $x")
-                    val dir = File(getPlatform()!!.basePath + File.separator + "EasyRest")
+                    val dir = File(getPlatform()?.getBasePath() + File.separator + "EasyRest")
                     dir.mkdir()
                     val f = File(getCachedFileName())
                     mapper!!.writeValue(f, getJsonResponseEntity()!!)

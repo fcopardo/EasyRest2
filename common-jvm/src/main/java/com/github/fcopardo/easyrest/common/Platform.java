@@ -1,10 +1,12 @@
 package com.github.fcopardo.easyrest.common;
 
+import com.github.fcopardo.easyrest.api.PlatformContract;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-public interface Platform {
+public interface Platform extends PlatformContract {
 
     void deleteCache();
     void deleteCache(List<Class> classes, long maximumTime);
