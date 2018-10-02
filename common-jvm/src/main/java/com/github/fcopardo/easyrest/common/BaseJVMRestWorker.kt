@@ -2,6 +2,8 @@ package com.github.fcopardo.easyrest.common
 
 import com.github.fcopardo.easyrest.api.RestWorker
 import com.github.fcopardo.easyrest.api.callbacks.*
+import com.github.pardo.easyrest.api.JsonSerializer
+import java.io.File
 import java.net.URI
 import java.util.*
 
@@ -10,7 +12,7 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
     protected val entityClass : Class<T>
     protected val jsonResponseEntityClass : Class<X>
     private var platform : Z? = null
-    protected var mapper : JsonFileSerializer<X>?= null
+    protected var mapper : JsonSerializer<File, X>?= null
     private var milliseconds : Int = 5000
     private var entity : T? = null
     private var jsonResponseEntity : X? = null
@@ -44,7 +46,7 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
         return platform
     }
 
-    fun setJsonSerializer(serializer: JsonFileSerializer<X>): BaseJVMRestWorker<T, X, Z> {
+    fun setJsonSerializer(serializer: JsonSerializer<File, X>): BaseJVMRestWorker<T, X, Z> {
         this.mapper = serializer
         return this
     }

@@ -68,5 +68,9 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
         PoolExecutor.get().getExecutor(true).execute(task)
     }
 
+    override fun execute(isAsync: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 
 }
