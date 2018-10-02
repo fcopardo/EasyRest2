@@ -144,4 +144,6 @@ interface BaseRestWorker<T, X, out PlatformContract> {
 
     fun setFullAsync(fullAsync : Boolean) : BaseRestWorker<T, X, out PlatformContract>
 
+    fun execute(isAsync : Boolean)
+
 }
