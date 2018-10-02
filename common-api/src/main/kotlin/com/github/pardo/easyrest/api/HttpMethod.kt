@@ -1,7 +1,7 @@
-package com.github.fcopardo.easyrest.common;
+package com.github.fcopardo.easyrest.common
 
-public enum HttpMethod {
-    GET, POST, PUT, DELETE, PATCH, HEAD;
+enum class HttpMethod {
+    GET, POST, PUT, DELETE, PATCH, HEAD
     /*public static final int GET    = 0XFF;
     public static final int POST   = 0XFFF;
     public static final int PUT    = 0XFFFF;

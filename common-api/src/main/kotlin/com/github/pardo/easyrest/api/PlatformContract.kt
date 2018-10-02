@@ -7,5 +7,6 @@ interface PlatformContract {
     fun checkConnectivity(): Boolean
     fun getBasePath(): String
     fun getFullPath(): String
+    fun getHashOne(password: String): String
 
 }
