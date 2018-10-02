@@ -1,13 +1,12 @@
 package com.github.fcopardo.easyrest.desktop
 
-import com.github.fcopardo.easyrest.common.Platform
+import com.github.fcopardo.easyrest.common.JVMPlatform
 import java.io.File
 import java.io.File.separator
 import java.io.FileFilter
-import java.util.*
 import java.util.concurrent.FutureTask
 
-class DesktopPlatform : Platform {
+class DesktopPlatform : JVMPlatform {
 
     override fun getFullPath(): String {
         return System.getProperty("user.dir") + File.separator + "EasyRest" + File.separator

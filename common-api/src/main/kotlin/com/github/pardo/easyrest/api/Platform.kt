@@ -1,6 +1,6 @@
 package com.github.fcopardo.easyrest.api
 
-interface PlatformContract<T> {
+interface Platform<T> {
 
     fun deleteCache()
     fun deleteCache(classes: List<T>, maximumTime: Long)

@@ -1,11 +1,11 @@
 package com.github.fcopardo.easyrest.common
 
-import com.github.fcopardo.easyrest.api.PlatformContract
+import com.github.fcopardo.easyrest.api.Platform
 
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-interface Platform : PlatformContract<Class<*>> {
+interface JVMPlatform : Platform<Class<*>> {
 
     /**
      * Creates a SHA-1 hash from a given string.
