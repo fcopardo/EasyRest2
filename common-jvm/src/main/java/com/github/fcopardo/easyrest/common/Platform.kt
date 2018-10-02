@@ -5,13 +5,7 @@ import com.github.fcopardo.easyrest.api.PlatformContract
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-interface Platform : PlatformContract {
-
-    override fun deleteCache()
-    fun deleteCache(classes: List<Class<*>>, maximumTime: Long)
-    override fun checkConnectivity(): Boolean
-    override fun getBasePath(): String
-    override fun getFullPath(): String
+interface Platform : PlatformContract<Class<*>> {
 
     /**
      * Creates a SHA-1 hash from a given string.
