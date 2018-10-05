@@ -1,9 +1,9 @@
 package com.github.fcopardo.easyrest.common
 
-import com.github.pardo.easyrest.api.JsonSerializer
+import com.github.pardo.easyrest.api.DoubleSerializer
 import java.io.File
 
-interface JsonFileSerializer<T, X> : JsonSerializer<File, X> {
+interface JsonFileSerializer<T, X> : DoubleSerializer<File, X> {
     /**
      * writes an object into a file using JSON
      */

@@ -2,11 +2,18 @@ package com.github.fcopardo.easyrest.api
 
 import com.github.fcopardo.easyrest.api.callbacks.*
 import com.github.fcopardo.easyrest.common.HttpMethod
+import com.github.pardo.easyrest.api.Serializer
 
 /**
  * Public API
  */
 interface BaseRestWorker<T, X, out PlatformContract> {
+
+
+    /**
+     * Sets the serializer for json to object conversions
+     */
+    fun setSerializer(serializer: Serializer) : BaseRestWorker<T, X, out PlatformContract>
 
     /**
      * Setter for the request's timeout

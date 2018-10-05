@@ -12,7 +12,7 @@ import java.util.*
 
 class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
 
-    constructor(platform: AndroidPlatform, responseClass: Class<T>, requestClass: Class<X>):super(platform, responseClass, requestClass){
+    constructor(platform: AndroidPlatform, responseClass: Class<T>, requestClass: Class<X>):super(responseClass, requestClass, platform){
        EasyRest.build(getPlatform())
     }
 
@@ -67,10 +67,4 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
         val task = Task()
         PoolExecutor.get().getExecutor(true).execute(task)
     }
-
-    override fun execute(isAsync: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
 }

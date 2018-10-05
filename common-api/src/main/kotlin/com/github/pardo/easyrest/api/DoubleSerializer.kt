@@ -1,6 +1,6 @@
 package com.github.pardo.easyrest.api
 
-interface JsonSerializer<T, X> {
+interface DoubleSerializer<T, X> {
 
     /**
      * writes an object into a file using JSON
