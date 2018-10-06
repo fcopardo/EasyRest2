@@ -6,6 +6,6 @@ import kotlin.reflect.KClass
  * Placeholder for Json serialization
  */
 interface Serializer {
-    fun <T> serialize(data : T, type : KClass<*>) : String
-    fun <T> deserialize(json: String, type : KClass<*>) : T
+    fun <T : Any> serializeKotlin(data : T, type : KClass<*>) : String
+    fun <T: Any> deserializeKotlin(json: String, type : KClass<*>) : T
 }

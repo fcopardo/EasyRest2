@@ -9,12 +9,6 @@ import com.github.pardo.easyrest.api.Serializer
  */
 interface BaseRestWorker<T, X, out PlatformContract> {
 
-
-    /**
-     * Sets the serializer for json to object conversions
-     */
-    fun setSerializer(serializer: Serializer) : BaseRestWorker<T, X, out PlatformContract>
-
     /**
      * Setter for the request's timeout
      */

@@ -3,6 +3,7 @@ package com.github.fcopardo.easyrest.common
 import com.github.fcopardo.easyrest.api.RestWorker
 import com.github.fcopardo.easyrest.api.callbacks.*
 import com.github.pardo.easyrest.api.DoubleSerializer
+import com.github.pardo.easyrest.api.KotlinSerializer
 import com.github.pardo.easyrest.api.Serializer
 import com.github.pardo.easyrest.common.MediaTypes
 import java.io.File
@@ -12,14 +13,13 @@ import okhttp3.*
 import java.io.IOException
 import kotlin.reflect.KClass
 
-
 abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
 
     protected val entityClass : Class<T>
     protected val jsonResponseEntityClass : Class<X>
     private var platform : Z? = null
     protected var mapper : DoubleSerializer<File, X>?= null
-    protected var mySerializer : Serializer? = null
+    protected var mySerializer : KotlinJVMSerializer? = null
     private var milliseconds : Int = 5000
     private var entity : T? = null
     private var jsonResponseEntity : X? = null
@@ -53,7 +53,7 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
         return platform
     }
 
-    override fun setSerializer(serializer: Serializer) : BaseJVMRestWorker<T, X, Z> {
+    fun setSerializer(serializer: KotlinJVMSerializer) : BaseJVMRestWorker<T, X, Z> {
         this.mySerializer = serializer
         return this
     }
@@ -271,7 +271,8 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
                 when{
                     response.code() in 200..299 ->{
                         afterTaskCompletion?.onTaskCompleted(
-                                mySerializer?.deserialize(response.body()!!.string(), kClass)!!
+                                //mySerializer?.deserialize(response.body()!!.string(), kClass)!!
+                                mySerializer?.deserialize(response.body()!!.string(), jsonResponseEntityClass)!!
                         )
                         result = true
                     }

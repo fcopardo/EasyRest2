@@ -9,8 +9,9 @@ targetCompatibility = "1.8"
 dependencies {
     expectedBy project(":common-api")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version"
 }
 
 compileKotlin {

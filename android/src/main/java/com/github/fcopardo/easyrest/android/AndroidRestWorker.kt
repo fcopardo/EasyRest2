@@ -1,9 +1,11 @@
 package com.github.fcopardo.easyrest.android
 
 import android.util.Log
+import com.github.fcopardo.easyrest.api.BaseRestWorker
 import com.github.fcopardo.easyrest.common.BaseJVMRestWorker
 import com.github.fcopardo.easyrest.common.EasyRest
 import com.github.fcopardo.easyrest.common.PoolExecutor
+import com.github.pardo.easyrest.api.Serializer
 import java.io.File
 import java.io.IOException
 import java.security.NoSuchAlgorithmException
@@ -12,7 +14,7 @@ import java.util.*
 
 class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
 
-    constructor(platform: AndroidPlatform, responseClass: Class<T>, requestClass: Class<X>):super(responseClass, requestClass, platform){
+    constructor(platform: AndroidPlatform, responseClass: Class<T>, requestClass: Class<X>):super(platform, responseClass, requestClass){
        EasyRest.build(getPlatform())
     }
 

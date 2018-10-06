@@ -32,7 +32,7 @@ class AndroidPlatform : JVMPlatform {
      * Deletes the EasyRest cache.
      */
     override fun deleteCache() {
-        class Task : Runnable {
+        class LongTask : Runnable {
             var context: Context? = null
 
             override fun run() {
@@ -46,7 +46,7 @@ class AndroidPlatform : JVMPlatform {
             }
         }
 
-        val myTask = Task()
+        val myTask = LongTask()
         myTask.context = application?.applicationContext
         val thread = Thread(myTask)
         thread.start()

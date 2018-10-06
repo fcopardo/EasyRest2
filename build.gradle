@@ -10,6 +10,7 @@ buildscript {
         mavenCentral()
         maven { url "https://dl.bintray.com/jetbrains/kotlin-native-dependencies" }
         maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "http://kotlin.bintray.com/kotlinx" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
@@ -24,12 +25,15 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "http://kotlin.bintray.com/kotlinx" }
         google()
         jcenter()
         mavenCentral()
         mavenLocal()
-        maven { url "https://kotlin.bintray.com/kotlinx" }
     }
+
+    apply plugin: 'kotlinx-serialization'
 }
 
 task clean(type: Delete) {
