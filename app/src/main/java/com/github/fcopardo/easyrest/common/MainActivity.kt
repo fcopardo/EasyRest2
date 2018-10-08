@@ -9,16 +9,12 @@ import com.github.fcopardo.easyrest.android.AndroidPlatform
 import com.github.fcopardo.easyrest.android.AndroidRestWorker
 import com.github.fcopardo.easyrest.api.callbacks.AfterTaskCompletion
 import com.google.gson.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.reflect.KClass
-import java.lang.reflect.Type
 import com.google.gson.reflect.TypeToken
-import com.google.gson.GsonBuilder
-import com.google.gson.Gson
-
-
-
-
+import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
+import org.json.JSONObject
+import java.lang.reflect.Type
+import kotlin.reflect.KClass
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,6 +62,24 @@ class MainActivity : AppCompatActivity() {
             val gson = GsonBuilder().registerTypeAdapter(Categories::class.java, customSerializer).create()
 
             override fun <T> deserialize(json: String, type: Class<T>): T {
+
+                var reflectionSerializer = ReflectionSerializer()
+
+                if(json.startsWith("[")){
+                    /*var jsonArray = JSONArray(json)
+
+                    for(i in jsonArray.length()-1 downTo 0 step 1){
+                        Log.e("json org", jsonArray.get(i).toString())
+                    }*/
+                    //var o = reflectionSerializer.deserialize(json, Array<Category>::class.java)
+                    var o = reflectionSerializer.deserialize(json, type)
+
+                }else{
+                    var jsonObject = JSONObject(json)
+                    var o = reflectionSerializer.deserialize(json, type)
+                }
+
+
                 return gson.fromJson(json, type)
             }
 
@@ -81,20 +95,20 @@ class MainActivity : AppCompatActivity() {
                 return gson.toJson(data)
             }
         }
-        var restWorker : AndroidRestWorker<Void, Categories, AndroidPlatform>
+        var restWorker : AndroidRestWorker<Void, Array<Category>, AndroidPlatform>
                 = AndroidRestWorker(
                 platform,
                 Void::class.java,
-                Categories::class.java
+                Array<Category>::class.java
         )
 
         restWorker
-                .setSerializer(serializer)
+                .setSerializer(ReflectionSerializer())
                 .setUrl("https://api.mercadolibre.com/sites/MLA/categories")
                 .setMethodToCall(HttpMethod.GET)
-                .setTaskCompletion(object : AfterTaskCompletion<Categories>{
-                    override fun onTaskCompleted(result: Categories) {
-                        for (item : Category in result.members){
+                .setTaskCompletion(object : AfterTaskCompletion<Array<Category>>{
+                    override fun onTaskCompleted(result: Array<Category>) {
+                        for (item : Category in result){
                             Log.e("category", item.id+" - "+item.name)
                         }
                     }

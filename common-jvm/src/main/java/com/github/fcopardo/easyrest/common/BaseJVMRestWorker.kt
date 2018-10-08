@@ -263,10 +263,10 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
     protected fun makeCall(call : Call){
         call.enqueue(object : Callback{
             override fun onResponse(call: Call, response: Response) {
-                val kClass : KClass<*> = when {
+                /*val kClass : KClass<*> = when {
                     jsonResponseEntityClass.canonicalName == Void.TYPE.canonicalName -> Void.TYPE.kotlin
                     else -> Class.forName(jsonResponseEntityClass.canonicalName).kotlin
-                }
+                }*/
                 var result = false
                 when{
                     response.code() in 200..299 ->{
