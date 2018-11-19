@@ -32,7 +32,7 @@ class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
                 e.printStackTrace()
             }
 
-            return (getPlatform()!!.fullPath
+            return (getPlatform()?.getFullPath()
                     + jsonResponseEntityClass.simpleName
                     + queryKey)
         }
@@ -51,7 +51,7 @@ class DesktopRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, DesktopPlatform> {
                     val random = Random()
                     val x = random.nextInt()
                     showMessage("EasyRest-Cache", "Starting serialization $x")
-                    val dir = File(getPlatform()!!.basePath + File.separator + "EasyRest")
+                    val dir = File(getPlatform()?.getBasePath() + File.separator + "EasyRest")
                     dir.mkdir()
                     val f = File(getCachedFileName())
                     mapper!!.writeValue(f, getJsonResponseEntity()!!)

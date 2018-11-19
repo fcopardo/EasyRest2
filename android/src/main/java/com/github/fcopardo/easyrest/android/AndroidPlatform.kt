@@ -3,12 +3,12 @@ package com.github.fcopardo.easyrest.android
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import com.github.fcopardo.easyrest.common.Platform
+import com.github.fcopardo.easyrest.common.JVMPlatform
 import java.io.File
 import java.io.FileFilter
 import java.util.*
 
-class AndroidPlatform : Platform {
+class AndroidPlatform : JVMPlatform {
     override fun getFullPath(): String {
         return application?.cacheDir?.absolutePath + File.separator + "EasyRest" + File.separator
     }
@@ -32,7 +32,7 @@ class AndroidPlatform : Platform {
      * Deletes the EasyRest cache.
      */
     override fun deleteCache() {
-        class Task : Runnable {
+        class LongTask : Runnable {
             var context: Context? = null
 
             override fun run() {
@@ -46,7 +46,7 @@ class AndroidPlatform : Platform {
             }
         }
 
-        val myTask = Task()
+        val myTask = LongTask()
         myTask.context = application?.applicationContext
         val thread = Thread(myTask)
         thread.start()

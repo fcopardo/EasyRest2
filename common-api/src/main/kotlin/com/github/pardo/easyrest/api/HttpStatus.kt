@@ -1,6 +1,8 @@
 @file:JvmName("HttpStatus")
 package com.github.fcopardo.easyrest.common
 
+import kotlin.jvm.JvmName
+
 class HttpStatus{
 
     companion object {

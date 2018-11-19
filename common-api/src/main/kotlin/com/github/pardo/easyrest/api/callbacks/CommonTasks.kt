@@ -1,7 +1,4 @@
-package com.github.fcopardo.easyrest.common.callbacks
-
-
-import com.github.fcopardo.easyrest.common.HttpStatus
+package com.github.fcopardo.easyrest.api.callbacks
 
 /**
  * Created by FcoPardo on 6/7/15.

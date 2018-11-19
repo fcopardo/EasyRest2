@@ -1,17 +1,25 @@
 package com.github.fcopardo.easyrest.common
 
-import com.github.fcopardo.easyrest.common.callbacks.*
+import com.github.fcopardo.easyrest.api.RestWorker
+import com.github.fcopardo.easyrest.api.callbacks.*
+import com.github.pardo.easyrest.api.DoubleSerializer
+import com.github.pardo.easyrest.api.KotlinSerializer
+import com.github.pardo.easyrest.api.Serializer
+import com.github.pardo.easyrest.common.MediaTypes
 import java.io.File
-import java.io.IOException
 import java.net.URI
 import java.util.*
+import okhttp3.*
+import java.io.IOException
+import kotlin.reflect.KClass
 
 abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
 
     protected val entityClass : Class<T>
     protected val jsonResponseEntityClass : Class<X>
     private var platform : Z? = null
-    protected var mapper : JsonSerializer<X>?= null
+    protected var mapper : DoubleSerializer<File, X>?= null
+    protected var mySerializer : KotlinJVMSerializer? = null
     private var milliseconds : Int = 5000
     private var entity : T? = null
     private var jsonResponseEntity : X? = null
@@ -45,7 +53,12 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
         return platform
     }
 
-    fun setJsonSerializer(serializer: JsonSerializer<X>): BaseJVMRestWorker<T, X, Z> {
+    fun setSerializer(serializer: KotlinJVMSerializer) : BaseJVMRestWorker<T, X, Z> {
+        this.mySerializer = serializer
+        return this
+    }
+
+    fun setJsonSerializer(serializer: DoubleSerializer<File, X>): BaseJVMRestWorker<T, X, Z> {
         this.mapper = serializer
         return this
     }
@@ -151,7 +164,7 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
         return this
     }
 
-    override fun getURI(): URI {
+    fun getURI(): URI {
         return URI(url)
     }
 
@@ -224,4 +237,58 @@ abstract class BaseJVMRestWorker<T, X, Z> : RestWorker<T, X, Z> {
 
     abstract fun getCachedFileName(): String
     abstract fun showMessage(title : String, message : String)
+
+    protected fun doCall(){
+
+        createUrl()
+        val client = OkHttpClient()
+        var requestBuilder = Request.Builder().url(getUrl())
+        when(httpMethod){
+
+            HttpMethod.POST->{
+                val kClass : KClass<*> = when {
+                    entityClass.canonicalName == Void.TYPE.canonicalName -> Void.TYPE.kotlin
+                    else -> Class.forName(entityClass.canonicalName).kotlin
+                }
+                requestBuilder.put(RequestBody.create(MediaTypes.JSON, mySerializer?.serialize(entity, kClass)))
+            }
+        }
+        var call = client.newCall(Request.Builder()
+                .url(getUrl())
+                .build())
+
+        makeCall(call)
+    }
+
+    protected fun makeCall(call : Call){
+        call.enqueue(object : Callback{
+            override fun onResponse(call: Call, response: Response) {
+                /*val kClass : KClass<*> = when {
+                    jsonResponseEntityClass.canonicalName == Void.TYPE.canonicalName -> Void.TYPE.kotlin
+                    else -> Class.forName(jsonResponseEntityClass.canonicalName).kotlin
+                }*/
+                var result = false
+                when{
+                    response.code() in 200..299 ->{
+                        afterTaskCompletion?.onTaskCompleted(
+                                //mySerializer?.deserialize(response.body()!!.string(), kClass)!!
+                                mySerializer?.deserialize(response.body()!!.string(), jsonResponseEntityClass)!!
+                        )
+                        result = true
+                    }
+                    response.code() in 400..499  -> afterClientTaskFailure?.onClientTaskFailed(response.code())
+                    response.code() in 500..599 -> afterServerTaskFailure?.onServerTaskFailed(response.code())
+                }
+                commonTasks?.performCommonTask(result, response.code())
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                afterTaskFailure?.onTaskFailed(e)
+            }
+        })
+    }
+
+    override fun execute(isAsync: Boolean) {
+        doCall()
+    }
 }

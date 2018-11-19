@@ -1,15 +1,13 @@
 package com.github.fcopardo.easyrest.desktop
 
-import com.github.fcopardo.easyrest.common.Platform
+import com.github.fcopardo.easyrest.common.JVMPlatform
 import java.io.File
-import java.nio.file.Files.delete
 import java.io.File.separator
 import java.io.FileFilter
-import java.util.*
 import java.util.concurrent.FutureTask
-import java.util.Arrays.asList
 
-class DesktopPlatform : Platform {
+class DesktopPlatform : JVMPlatform {
+
     override fun getFullPath(): String {
         return System.getProperty("user.dir") + File.separator + "EasyRest" + File.separator
     }
@@ -38,12 +36,10 @@ class DesktopPlatform : Platform {
         futureTask.run()
     }
 
-    override fun deleteCache(classes: MutableList<Class<Any>>?, maximumTime: Long) {
+    override fun deleteCache(classes: List<Class<*>>, maximumTime: Long) {
         class Task : Runnable {
 
             var workingDir = System.getProperty("user.dir")
-            var classes: List<Class<*>> = ArrayList()
-            var maximumTime: Long = 0
 
             override fun run() {
 

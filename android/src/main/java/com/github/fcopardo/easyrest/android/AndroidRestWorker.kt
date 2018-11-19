@@ -1,12 +1,14 @@
 package com.github.fcopardo.easyrest.android
 
+import android.util.Log
+import com.github.fcopardo.easyrest.api.BaseRestWorker
 import com.github.fcopardo.easyrest.common.BaseJVMRestWorker
 import com.github.fcopardo.easyrest.common.EasyRest
-import java.io.File
-import java.security.NoSuchAlgorithmException
-import android.util.Log
 import com.github.fcopardo.easyrest.common.PoolExecutor
+import com.github.pardo.easyrest.api.Serializer
+import java.io.File
 import java.io.IOException
+import java.security.NoSuchAlgorithmException
 import java.util.*
 
 
@@ -33,7 +35,7 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
                 e.printStackTrace()
             }
 
-            return (getPlatform()!!.fullPath
+            return (getPlatform()?.getFullPath()
                     + jsonResponseEntityClass.simpleName
                     + queryKey)
         }
@@ -52,7 +54,7 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
                     val random = Random()
                     val x = random.nextInt()
                     showMessage("EasyRest-Cache", "Starting serialization $x")
-                    val dir = File(getPlatform()!!.basePath + File.separator + "EasyRest")
+                    val dir = File(getPlatform()?.getBasePath() + File.separator + "EasyRest")
                     dir.mkdir()
                     val f = File(getCachedFileName())
                     mapper!!.writeValue(f, getJsonResponseEntity()!!)
@@ -67,6 +69,4 @@ class AndroidRestWorker<T, X, Z> : BaseJVMRestWorker<T, X, AndroidPlatform> {
         val task = Task()
         PoolExecutor.get().getExecutor(true).execute(task)
     }
-
-
 }

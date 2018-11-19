@@ -7,12 +7,12 @@ import java.util.List;
 public class EasyRest {
 
     private boolean DebugMode = true;
-    private Platform platform;
+    private JVMPlatform platform;
     private LiteCachingStorage defaultQuickCache;
 
     private static EasyRest singleton;
 
-    public static <X extends Platform> void build(X platform){
+    public static <X extends JVMPlatform> void build(X platform){
         if(singleton == null){
             singleton = new EasyRest(platform);
         }
@@ -20,12 +20,12 @@ public class EasyRest {
 
     public static EasyRest get(){
         if(singleton == null){
-            throw new NullPointerException("Error! the EasyRest instance needs to be initialized first by using the build(Platform platform) method");
+            throw new NullPointerException("Error! the EasyRest instance needs to be initialized first by using the build(JVMPlatform platform) method");
         }
         return singleton;
     }
 
-    private <X extends Platform> EasyRest(X platform){
+    private <X extends JVMPlatform> EasyRest(X platform){
         this.platform = platform;
     }
 
@@ -38,7 +38,7 @@ public class EasyRest {
      * @param classes the response types to be deleted.
      * @param maximumTime The maximum caching time.
      */
-    public void deleteCache(List<Class> classes, long maximumTime){
+    public void deleteCache(List<Class<?>> classes, long maximumTime){
         if(platform!=null) platform.deleteCache(classes, maximumTime);
     }
 

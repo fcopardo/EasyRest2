@@ -2,14 +2,21 @@
 
 buildscript {
     ext.kotlin_version = '1.2.61'
+    ext.kotlin_native_version='0.9'
+    ext.serialization_version='0.6.1'
     repositories {
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://dl.bintray.com/jetbrains/kotlin-native-dependencies" }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "http://kotlin.bintray.com/kotlinx" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-native-gradle-plugin:$kotlin_native_version"
+        classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,13 +25,18 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "http://kotlin.bintray.com/kotlinx" }
         google()
         jcenter()
         mavenCentral()
         mavenLocal()
     }
+
+    apply plugin: 'kotlinx-serialization'
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
